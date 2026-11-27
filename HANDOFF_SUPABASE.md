@@ -9,13 +9,13 @@
 
 ## Supabase
 
-Projeto usado: `MiloRuback's Project` (`ctqgcnsfdvxtnkejeusd`). Ele já possui tabelas de outro app; as alterações do EstoquePro criaram tabelas próprias e não alteraram o schema existente. Migrations aplicadas no Supabase:
+Projeto atual: `eli` (`gafwkjlaianlxgolcors`), região `us-east-2`. Os projetos Supabase anteriores foram apagados pelo usuário. O novo projeto foi criado hoje e recebeu o schema e os dados do EstoquePro. Migrations aplicadas:
 
 1. `estoquepro_initial_schema`
 2. `estoquepro_supabase_auth`
 3. `auth_and_movement_indexes`
 
-Foi adicionada carga demonstrativa: 2 perfis, 6 categorias, 5 produtos e 7 movimentações. As quatro tabelas do EstoquePro estão com RLS ativado e sem acesso direto para `anon`/`authenticated`; a aplicação usa Prisma server-side. O Supabase Auth em si é usado pelo login/cadastro; não há trigger global de `auth.users`.
+Foi adicionada carga demonstrativa: 2 perfis, 6 categorias, 5 produtos e 7 movimentações. As quatro tabelas do EstoquePro estão com RLS ativado e sem acesso direto para `anon`/`authenticated`; a aplicação usa Prisma server-side. O schema Auth deste projeto novo contém `auth.one_time_tokens.expires_at`, que faltava no projeto anterior e causava erro 500 no cadastro.
 
 ## Implementação
 
@@ -27,8 +27,9 @@ Foi adicionada carga demonstrativa: 2 perfis, 6 categorias, 5 produtos e 7 movim
 
 ## Pendências de ambiente e validação
 
-- `DATABASE_URL`/`DIRECT_URL` exigem a senha do banco do proprietário; ela não foi coletada nem gravada no Git. Copiar as duas URLs no `.env` local e na Vercel.
-- Adicionar `http://localhost:3000/auth/callback` e domínio da Vercel em Supabase Auth > URL Configuration.
+- `.env.local` local já aponta para o projeto novo usando a URL e publishable key. `DATABASE_URL`/`DIRECT_URL` ainda exigem a senha do banco; ela não foi coletada nem gravada no Git. Atualizar também as quatro variáveis no ambiente Vercel.
+- Adicionar `http://localhost:3000/auth/callback` e `https://estoquepro-mocha.vercel.app/auth/callback` em Supabase Auth > URL Configuration.
+- O projeto recém-criado está com o serviço de e-mail padrão do Supabase. Para confirmar contas em endereços que não pertencem à equipe, configurar um provedor SMTP próprio.
 - Promover a conta escolhida para ADMIN com `supabase/bootstrap_admin.sql`.
-- Testes ponta a ponta do site exigem as variáveis acima e uma conta de e-mail confirmada.
-- Advisors ainda mostram alertas preexistentes do outro app na mesma instância e um INFO esperado de RLS ligado sem policy nas tabelas que não ficam expostas na Data API. Não alteramos tabelas ou funções daquele app.
+- Testes ponta a ponta do site exigem a senha do banco, as variáveis Vercel atualizadas, URLs de redirecionamento e um provedor de e-mail adequado para a conta de teste.
+- O único aviso de Advisor atual é o INFO esperado de RLS ligado sem policy nas quatro tabelas que não ficam expostas na Data API.

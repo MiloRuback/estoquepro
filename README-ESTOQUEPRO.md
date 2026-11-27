@@ -20,6 +20,8 @@ Aplicação web para pequenas empresas cadastrarem categorias e produtos, regist
 
 A configuração do Auth precisa permitir `http://localhost:3000/auth/callback` como Redirect URL. Para Vercel, adicione também `https://SEU-DOMINIO.vercel.app/auth/callback` no Auth > URL Configuration.
 
+O serviço de e-mail padrão do Supabase é limitado a endereços da equipe do projeto e a um volume baixo. Para permitir cadastro de qualquer usuário em produção, configure um provedor SMTP próprio em Auth > SMTP Settings.
+
 ## Banco Supabase
 
 O projeto Supabase já recebeu as migrations `estoquepro_initial_schema`, `estoquepro_supabase_auth` e `auth_and_movement_indexes`, além da carga demonstrativa. Os arquivos versionados são:
